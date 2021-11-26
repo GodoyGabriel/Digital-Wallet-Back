@@ -18,7 +18,8 @@ export class AddressesDataService {
   }
 
   async getAll(): Promise<AddressData[]> {
-    return await this.AddressDataModel.find({});
+    const allAddresses = await this.AddressDataModel.find({});
+    return allAddresses;
   }
 
   async getAddress(id: string) {
