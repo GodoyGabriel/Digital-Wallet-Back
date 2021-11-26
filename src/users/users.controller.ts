@@ -1,4 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  NotFoundException,
+  Res,
+  HttpStatus,
+  Query,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -8,22 +19,31 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post('/create')
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+  async create(@Res() res, @Body() createUserDto: CreateUserDto) {
+    const newUser = await this.usersService.create(createUserDto);
+    return res.status(HttpStatus.OK).json({
+      message: 'User Successfully created',
+      newUser,
+    });
   }
 
   @Get('/getAll')
-  async getAllUsers() {
-    return await this.usersService.getAllUsers();
+  async getAllUsers(@Res() res) {
+    const allUsers = await this.usersService.getAllUsers();
+    return res.status(HttpStatus.OK).json({ allUsers });
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne(id);
+  @Get('/getUser')
+  async getUser(@Res() res, @Query('id') id: string) {
+    const userFound = await this.usersService.getUser(id);
+    if (!userFound) throw new NotFoundException('User not found');
+    return res.status(HttpStatus.OK).json({ userFound });
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(id);
+  @Delete('/delete')
+  async remove(@Res() res, @Query('id') id: string) {
+    const userFound = await this.usersService.remove(id);
+    if (!userFound) throw new NotFoundException('User not found');
+    return res.status(HttpStatus.OK).json({ userFound });
   }
 }

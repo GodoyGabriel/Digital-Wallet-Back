@@ -22,16 +22,33 @@ export class AddressesDataService {
   }
 
   async getAddress(id: string) {
-    const addressData = await this.AddressDataModel.findById(id);
-    return addressData;
+    try {
+      const addressData = await this.AddressDataModel.findById(id);
+      return addressData;
+    } catch (error) {
+      return null;
+    }
   }
 
   async favUpdate(id: string, updateAddressesDatumDto: UpdateAddressesDataDto) {
-    return this.AddressDataModel.findByIdAndUpdate(id, updateAddressesDatumDto, { new: true });
+    try {
+      const result = await this.AddressDataModel.findByIdAndUpdate(
+        id,
+        updateAddressesDatumDto,
+        { new: true },
+      );
+      return result;
+    } catch (error) {
+      return null;
+    }
   }
-  
+
   async remove(id: string) {
-    const result = await this.AddressDataModel.findByIdAndDelete(id);
-    return result;
+    try {
+      const result = await this.AddressDataModel.findByIdAndDelete(id);
+      return result;
+    } catch (error) {
+      return null;
+    }
   }
 }
