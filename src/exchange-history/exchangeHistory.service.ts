@@ -9,7 +9,6 @@ export class ExchangeHistoryService {
   constructor(@InjectModel(ExchangeHistory.name) private exchangeHistoryModel: Model<ExchangeHistoryDocument>) {}
 
   async create(createExchangeHistoryDto: CreateExchangeHistoryDto) {
-    console.log(createExchangeHistoryDto);
     const newExchange = new this.exchangeHistoryModel(createExchangeHistoryDto);
     return await newExchange.save();
   }
