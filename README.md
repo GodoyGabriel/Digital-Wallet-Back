@@ -26,6 +26,10 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
+### Clarifications
+
+The .env file is uploaded in order to lift the application without problems
+
 ## Installation
 
 ```bash
